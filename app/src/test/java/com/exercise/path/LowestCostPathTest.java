@@ -103,26 +103,32 @@ public class LowestCostPathTest {
 
     @Test
     public void noNumericMatrix() throws Exception {
-        LowestCostPath polc = new LowestCostPath(50, 3, 5, 10, 100);
-        Grid grid = new Grid(
-                "5 4 H\n"
-                        + "8 M 7\n"
-                        + "5 7 5\n"
-        );
-
-        LowestCostPath.Solution solution = polc.solve(grid);
-        exception.expect(Grid.BadGridException.class);
+        LowestCostPath polc = new LowestCostPath(50, 1, 3, 10, 100);
+        try {
+            Grid grid = new Grid(
+                    "5 4 H\n"
+                            + "8 2 7\n"
+                            + "5 7 5\n"
+            );
+            LowestCostPath.Solution solution = polc.solve(grid);
+            assert false;
+        } catch (Grid.BadGridException e) {
+            assert true;
+        }
     }
 
     @Test
     public void emptyMatrix() throws Exception {
         LowestCostPath polc = new LowestCostPath(50, 1, 5, 10, 100);
-        Grid grid = new Grid(
-                ""
-        );
+        Grid grid = new Grid(" \n");
 
-        LowestCostPath.Solution solution = polc.solve(grid);
-        exception.expect(Grid.BadGridException.class);
+        try {
+            LowestCostPath.Solution solution = polc.solve(grid);
+            assert false;
+        } catch (LowestCostPath.BadColException e) {
+            assert true;
+        }
+
     }
 
     @Test
@@ -133,6 +139,7 @@ public class LowestCostPathTest {
                         + "51 23 20 19 12\n"
                         + "60 12 20 11 10\n"
         );
+
 
         LowestCostPath.Solution solution = polc.solve(grid);
         assertEquals(100, solution.totalCost);
