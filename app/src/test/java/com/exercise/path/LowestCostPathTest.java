@@ -3,11 +3,15 @@ package com.exercise.path;
 import com.exercise.path.Grid;
 import com.exercise.path.LowestCostPath;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import static org.junit.Assert.*;
 
 public class LowestCostPathTest {
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
     @Test
     public void example1Solution_isCorrect() throws Exception {
         LowestCostPath polc = new LowestCostPath(50, 1, 5, 10, 100);
@@ -70,4 +74,82 @@ public class LowestCostPathTest {
         assertEquals(-102, solution.totalCost);
         assertArrayEquals(new Integer[]{2,2,2,2,1}, solution.pathRows);
     }
+
+    @Test
+    public void oneMatrix() throws Exception {
+        LowestCostPath polc = new LowestCostPath(50, 1, 5, 10, 100);
+        Grid grid = new Grid(
+                "5 8 5 3 5"
+        );
+
+        LowestCostPath.Solution solution = polc.solve(grid);
+        assertEquals(26, solution.totalCost);
+        assertArrayEquals(new Integer[]{1,1,1,1,1}, solution.pathRows);
+    }
+
+    @Test
+    public void fiveMatrix() throws Exception {
+        LowestCostPath polc = new LowestCostPath(50, 1, 1, 5, 100);
+        Grid grid = new Grid(
+                "5\n"
+                        + "8\n"
+                        + "5\n"
+                        + "3\n"
+                        + "5\n"
+        );
+
+        LowestCostPath.Solution solution = polc.solve(grid);
+    }
+
+    @Test
+    public void noNumericMatrix() throws Exception {
+        LowestCostPath polc = new LowestCostPath(50, 3, 5, 10, 100);
+        Grid grid = new Grid(
+                "5 4 H\n"
+                        + "8 M 7\n"
+                        + "5 7 5\n"
+        );
+
+        LowestCostPath.Solution solution = polc.solve(grid);
+        exception.expect(Grid.BadGridException.class);
+    }
+
+    @Test
+    public void emptyMatrix() throws Exception {
+        LowestCostPath polc = new LowestCostPath(50, 1, 5, 10, 100);
+        Grid grid = new Grid(
+                ""
+        );
+
+        LowestCostPath.Solution solution = polc.solve(grid);
+        exception.expect(Grid.BadGridException.class);
+    }
+
+    @Test
+    public void fiftyMaxSolution_isCorrect() throws Exception {
+        LowestCostPath polc = new LowestCostPath(300, 3, 5, 10, 100);
+        Grid grid = new Grid(
+                "69 10 19 10 19\n"
+                        + "51 23 20 19 12\n"
+                        + "60 12 20 11 10\n"
+        );
+
+        LowestCostPath.Solution solution = polc.solve(grid);
+        assertEquals(100, solution.totalCost);
+    }
+
+    @Test
+    public void MaxFiftySolution_isCorrect() throws Exception {
+        LowestCostPath polc = new LowestCostPath(300, 3, 4, 10, 100);
+        Grid grid = new Grid(
+                "60 3 3 6\n"
+                        + "6 3 7 9\n"
+                        + "5 6 8 3\n"
+        );
+
+        LowestCostPath.Solution solution = polc.solve(grid);
+        assertEquals(14, solution.totalCost);
+        assertArrayEquals(new Integer[]{3,2,1,3}, solution.pathRows);
+    }
+
 }
