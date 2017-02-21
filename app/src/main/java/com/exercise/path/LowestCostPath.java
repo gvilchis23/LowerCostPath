@@ -68,23 +68,23 @@ public class LowestCostPath {
 
         for (int lastCol = numCols; lastCol > 1; lastCol--) {
             for (int i = 0; i < numRows; i++) {
-                costGrid.set(i, lastCol-1, grid.get(i,lastCol-1));
+                costGrid.set(i, lastCol - 1, grid.get(i, lastCol - 1));
             }
 
-            for (int j = lastCol-2; j >= 0; j--) {
+            for (int j = lastCol - 2; j >= 0; j--) {
                 for (int i = 0; i < numRows; i++) {
-                    costGrid.set(i,j, grid.get(i,j) + minAt(costGrid,i,j));
+                    costGrid.set(i, j, grid.get(i, j) + minAt(costGrid, i, j));
                 }
             }
 
 
             mindex = mindex(costGrid);
 
-            if (costGrid.get(mindex,0) <= maxCost) {
+            if (costGrid.get(mindex, 0) <= maxCost) {
                 solution.totalCost = costGrid.get(mindex, 0);
                 solution.pathRows = buildPath(costGrid, mindex, lastCol);
 
-                return  solution;
+                return solution;
             }
 
             solution.isAllColumnsTraversed = false;
@@ -98,7 +98,7 @@ public class LowestCostPath {
 
         path.add(mindex + 1);
 
-        for (int j = 0; j < lastCol-1; j++) {
+        for (int j = 0; j < lastCol - 1; j++) {
             mindex = mindexAt(grid, mindex, j);
             path.add(grid.getWrappedRow(mindex) + 1);
         }
@@ -107,11 +107,11 @@ public class LowestCostPath {
     }
 
     private int mindex(Grid costGrid) {
-        int min = costGrid.get(0,0);
+        int min = costGrid.get(0, 0);
         int index = 0;
 
         for (int i = 0; i < costGrid.getNumRows(); i++) {
-            int x = costGrid.get(i,0);
+            int x = costGrid.get(i, 0);
             if (x < min) {
                 min = x;
                 index = i;
@@ -123,23 +123,23 @@ public class LowestCostPath {
 
 
     public int minAt(Grid cost, int i, int j) {
-        int x = cost.get(i-1,j+1);
-        int y = cost.get(i,j+1);
-        int z = cost.get(i+1,j+1);
+        int x = cost.get(i - 1, j + 1);
+        int y = cost.get(i, j + 1);
+        int z = cost.get(i + 1, j + 1);
 
-        return Math.min(x, Math.min(y,z));
+        return Math.min(x, Math.min(y, z));
     }
 
 
     public int mindexAt(Grid cost, int i, int j) {
-        int x = cost.get(i-1,j+1);
-        int y = cost.get(i,j+1);
-        int z = cost.get(i+1,j+1);
-        int min = Math.min(x, Math.min(y,z));
+        int x = cost.get(i - 1, j + 1);
+        int y = cost.get(i, j + 1);
+        int z = cost.get(i + 1, j + 1);
+        int min = Math.min(x, Math.min(y, z));
 
-        if (min == x) return i-1;
+        if (min == x) return i - 1;
         if (min == y) return i;
-        if (min == z) return i+1;
+        if (min == z) return i + 1;
 
         return i;
     }
@@ -171,7 +171,7 @@ public class LowestCostPath {
     }
 
     public static void printSolution(Solution solution) {
-        System.out.println(solution.isAllColumnsTraversed? "yes" : "no");
+        System.out.println(solution.isAllColumnsTraversed ? "yes" : "no");
         System.out.println(solution.totalCost);
 
         for (int i : solution.pathRows) {
